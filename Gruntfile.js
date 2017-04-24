@@ -403,14 +403,9 @@ module.exports = function (grunt) {
           src: ['generated/*']
         }, {
           expand: true,
-          cwd: './bower_components/weather-icons/font/',
+          cwd: './bower_components/Materialize/fonts/',
           src: ['**'],
-          dest: '<%= yeoman.dist %>/font/'
-        }, {
-          expand: true,
-          cwd: './bower_components/Materialize/font/',
-          src: ['**'],
-          dest: '<%= yeoman.dist %>/font/'
+          dest: '<%= yeoman.dist %>/fonts/'
         }]
       },
       styles: {
