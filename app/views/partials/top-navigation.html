@@ -1,0 +1,25 @@
+<nav class="white" role="navigation">
+  <div class="nav-wrapper container">
+    <a id="logo-container" href="#/" class="brand-logo"><span class="amv">amv</span> Geolocation</a>
+    <ul class="right hide-on-med-and-down">
+      <li ui-sref-active="active"><a data-ui-sref="home">Home</a></li>
+      <li ui-sref-active="active"><a data-ui-sref="settings">Settings</a></li>
+      <li ui-sref-active="active"><a data-ui-sref="about">About</a></li>
+    </ul>
+
+    <ul id="nav-mobile" class="side-nav">
+      <li ui-sref-active="active"><a data-ui-sref="home">Home</a></li>
+      <li ui-sref-active="active"><a data-ui-sref="settings">Settings</a></li>
+      <li ui-sref-active="active"><a data-ui-sref="about">About</a></li>
+    </ul>
+    <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+  </div>
+</nav>
+
+<script>
+  (function ($) {
+    $(function () {
+      $('.button-collapse').sideNav();
+    });
+  })(jQuery);
+</script>

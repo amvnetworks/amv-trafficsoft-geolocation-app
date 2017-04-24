@@ -1,0 +1,68 @@
+<div class="progress amber" style="margin: 0;" data-ng-show="loading">
+  <div class="indeterminate amber lighten-4"></div>
+</div>
+<div class="row" style="margin-bottom: 0;">
+  <div class="col s6 m4 l3" style="padding: 0;">
+    <div style="height: 600px; overflow-y: scroll; overflow-x: hidden;">
+      <form class="">
+        <div class="input-field col s12">
+          <input placeholder="" id="filterInput" type="text"
+                 data-ng-model="filterInput">
+          <label for="filterInput">Filter</label>
+        </div>
+      </form>
+      <div class="collection">
+        <a class="collection-item avatar"
+           data-ng-repeat="geolocation in locations | filter:filterInput"
+           href="#!" data-ng-click="zoomToLocation(geolocation)">
+          <i class="material-icons circle amber">track_changes</i>
+
+          <span class="badge">{{$index + 1}}</span>
+
+          <p>
+            {{ geolocation.name }}
+          </p>
+          <ul>
+            <li>
+              <i class="material-icons tiny">room</i>
+              <small data-ng-show="geolocation.location.lat && geolocation.location.lng">
+                lat/lng: {{ geolocation.location.lat }} / {{ geolocation.location.lng }}
+              </small>
+              <small data-ng-hide="geolocation.location.lat && geolocation.location.lng">
+                lat/lng: No location data available.
+              </small>
+            </li>
+            <li>
+              <i class="material-icons tiny">av_timer</i>
+              <small>
+                speed: {{ geolocation.data.speed }}
+              </small>
+            </li>
+          </ul>
+          <div data-ng-if="main.settings.debug">
+            {{ geolocation.data | json }}
+          </div>
+          <!--ul>
+            <li data-ng-repeat="xfcd in geolocation.data.xfcds">
+
+              <div>
+                <i class="material-icons tiny">label</i>
+                {{ xfcd.param }}
+                <span>{{ xfcd.value }}</span></div>
+            </li>
+          </ul-->
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col s6 m8 l9" style="padding: 0;">
+    <leaflet id="mymap"
+             defaults="main.map.defaults"
+             center="main.map.center"
+             markers="main.map.markers"
+             tiles="main.map.tiles"
+             height="600px">
+    </leaflet>
+  </div>
+</div>

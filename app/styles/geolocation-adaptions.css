@@ -1,0 +1,40 @@
+/* materialize adaptions */
+.material-icons {
+  vertical-align: middle;
+}
+
+.switch label input[type="checkbox"]:checked + .lever {
+  background-color: #fccf67;
+}
+
+.switch label input[type="checkbox"]:checked + .lever::after {
+  background-color: #fcaf17;
+}
+
+/* geolocation icons size classes */
+.wi-2x {
+  font-size: 2rem;
+}
+
+.wi-3x {
+  font-size: 3rem;
+}
+
+.wi-4x {
+  font-size: 4rem;
+}
+
+.wi-5x {
+  font-size: 5rem;
+}
+
+/* leaflet marker divs */
+.amv-geolocation .leaflet-div-icon {
+  background: transparent;
+  border: none;
+}
+
+
+.amv-geolocation footer.page-footer {
+  background-color: #fcaf17;
+}
