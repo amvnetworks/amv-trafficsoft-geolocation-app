@@ -22,7 +22,8 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: 'dist',
+    ghPages: 'docs'
   };
 
   // Define the configuration for all the tasks
@@ -164,6 +165,15 @@ module.exports = function (grunt) {
             '.tmp',
             '<%= yeoman.dist %>/{,*/}*',
             '!<%= yeoman.dist %>/.git{,*/}*'
+          ]
+        }]
+      },
+      ghPages: {
+        files: [{
+          dot: true,
+          src: [
+            '<%= yeoman.ghPages %>/{,*/}*',
+            '!<%= yeoman.ghPages %>/.git{,*/}*'
           ]
         }]
       },
@@ -408,6 +418,12 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
+      },
+      ghPages: {
+        expand: true,
+        cwd: '<%= yeoman.dist %>',
+        dest: '<%= yeoman.ghPages %>',
+        src: ['**']
       }
     },
 
@@ -461,6 +477,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'clean:ghPages',
     'clean:dist',
     'wiredep',
     'useminPrepare',
@@ -475,7 +492,8 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'copy:ghPages',
   ]);
 
   grunt.registerTask('default', [
