@@ -8,9 +8,11 @@ amv Geolocation UI is a frontend for amv Geolocation.
 - Materialize http://materializecss.com
 - leaflet
 
-![screenshot](screenshot.png)
-
 ## Build & development
+```bash
+npm install
+grunt
+```
 
 Run `grunt` for building and `grunt serve` for preview.
 
