@@ -1,5 +1,11 @@
 'use strict';
 
+var appendPrefixPreventingSubstitutionByGruntReplaceAndUglify = function (value) {
+  return '@@' + value;
+};
+var variableNameThatShouldNotBeReplaced = appendPrefixPreventingSubstitutionByGruntReplaceAndUglify('___ENV_REPLACE_WORKAROUND___');
+var replaceTaskInvoked = variableNameThatShouldNotBeReplaced !== '@@___ENV_REPLACE_WORKAROUND___';
+
 /**
  * @ngdoc overview
  * @name amvGeolocationUi
@@ -21,74 +27,118 @@ angular
     'knalli.angular-vertxbus',
     'js-data'
   ])
-  .factory('Materialize', ['$window', function($window) {
+  .factory('Materialize', ['$window', function ($window) {
     return $window.Materialize;
   }])
-  .factory('amvTrafficsoftRestJs', ['$window', function($window) {
-     return $window.amvTrafficsoftRestJs;
-   }])
-  .factory('DSLocalForageAdapter', ['$window', function($window) {
-     return $window.DSLocalForageAdapter;
-   }])
-  .run(['DS', 'DSLocalForageAdapter', function(DS, DSLocalForageAdapter) {
-    var localForageAdapter = new DSLocalForageAdapter();
-    DS.registerAdapter('localForage', localForageAdapter, { default: true });
+  .factory('amvTrafficsoftRestJs', ['$window', function ($window) {
+    return $window.amvTrafficsoftRestJs;
   }])
-  .factory('SettingsResource', ['DS', function(DS) {
-     return DS.defineResource('SettingsResource');
-   }])
-  .factory('amvClientSettingsTemplate', function() {
+  .factory('DSLocalForageAdapter', ['$window', function ($window) {
+    return $window.DSLocalForageAdapter;
+  }])
+  .run(['DS', 'DSLocalForageAdapter', function (DS, DSLocalForageAdapter) {
+    var localForageAdapter = new DSLocalForageAdapter();
+    DS.registerAdapter('localForage', localForageAdapter, {default: true});
+  }])
+  .factory('SettingsResource', ['DS', function (DS) {
+    return DS.defineResource('SettingsResource');
+  }])
+
+  .factory('amvApplicationInfo', [function () {
+    if (replaceTaskInvoked) {
+      return {
+        version: '@@___ENV_APP_VERSION___'
+      };
+    }
     return {
-     api: {
-       baseUrl:'http://www.example.com',
-       options: {
-         contractId: 1,
-         auth: {
-           username: 'username',
-           password: 'password',
-         },
-         vehicleIds: [1,2,3],
-       }
-     },
-     showPositionFetchedInRealtime: false,
-     positionUpdateIntervalInSeconds: 10,
-     debug: false
-   };
+      version: 'dev'
+    };
+  }])
+  .factory('amvGitInfo', function () {
+    if (replaceTaskInvoked) {
+      return {
+        local: {
+          branch: {
+            shortSHA: '@@___ENV_GITINFO_SHORT_SHA___',
+            name: '@@___ENV_GITINFO_BRANCH_NAME___',
+            lastCommitNumber: '@@___ENV_GITINFO_LAST_COMMIT_NUMBER___'
+          }
+        },
+        remote: {
+          origin: {
+            url: '@@___ENV_GITINFO_REMOTE_URL___'
+          }
+        }
+      };
+    }
+
+    return {
+      local: {
+        branch: {
+          shortSHA: '${shortSHA}',
+          name: '${branchName}',
+          lastCommitNumber: '${lastCommitNumber}'
+        }
+      },
+      remote: {
+        origin: {
+          url: '${remoteUrl}'
+        }
+      }
+    };
   })
-  .factory('amvClientSettings', ['SettingsResource', function(SettingsResource) {
+  .factory('amvClientSettingsTemplate', function () {
     return {
-      get: function() {
-        return SettingsResource.findAll().then(function(settingsArray) {
+      api: {
+        baseUrl: 'http://www.example.com',
+        options: {
+          contractId: 1,
+          auth: {
+            username: 'username',
+            password: 'password',
+          },
+          vehicleIds: [1, 2, 3],
+        }
+      },
+      showPositionFetchedInRealtime: false,
+      positionUpdateIntervalInSeconds: 10,
+      debug: false
+    };
+  })
+  .factory('amvClientSettings', ['SettingsResource', function (SettingsResource) {
+    return {
+      get: function () {
+        return SettingsResource.findAll().then(function (settingsArray) {
           if (settingsArray.length !== 1) {
-             throw new Error('Cannot find settings.');
+            throw new Error('Cannot find settings.');
           } else {
-           return settingsArray[0];
+            return settingsArray[0];
           }
         });
       }
     };
   }])
-  .factory('amvClientFactory', ['amvTrafficsoftRestJs', 'amvClientSettings', function(amvTrafficsoftRestJs, amvClientSettings) {
+  .factory('amvClientFactory', ['amvTrafficsoftRestJs', 'amvClientSettings', function (amvTrafficsoftRestJs, amvClientSettings) {
     return {
-      get: function() {
-        return amvClientSettings.get().then(function(settings) {
+      get: function () {
+        return amvClientSettings.get().then(function (settings) {
           return settings.api;
-        }).then(function(apiSettings) {
+        }).then(function (apiSettings) {
           return amvTrafficsoftRestJs(apiSettings.baseUrl, apiSettings.options);
         });
       }
     };
   }])
-  .factory('amvXfcdClient', ['amvClientFactory', function(amvClientFactory) {
+  .factory('amvXfcdClient', ['amvClientFactory', function (amvClientFactory) {
     return {
-      get: function() {
-        return amvClientFactory.get().then(function(factory) {
+      get: function () {
+        return amvClientFactory.get().then(function (factory) {
           return factory.xfcd();
         });
       }
     };
   }])
-  .config(function(vertxEventBusProvider) {
+  .config(function (vertxEventBusProvider) {
     vertxEventBusProvider
       .enable()
       .useReconnect()
@@ -98,7 +148,7 @@ angular
     // for local development
     //vertxEventBusProvider.useUrlServer('http://localhost:8081');
   })
-  .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+  .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/home');
 
     $stateProvider
@@ -120,4 +170,8 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       });
+  }])
+
+  .controller('TopNavigationController', ['amvGitInfo', function (amvGitInfo) {
+    this.gitinfo = angular.copy(amvGitInfo);
   }]);

@@ -15,7 +15,7 @@ module.exports = function (grunt) {
   // Automatically load required Grunt tasks
   require('jit-grunt')(grunt, {
     useminPrepare: 'grunt-usemin',
-    ngtemplates: 'grunt-angular-templates'
+    ngtemplates: 'grunt-angular-templates',
     //cdnify: 'grunt-google-cdn'
   });
 
@@ -31,6 +31,8 @@ module.exports = function (grunt) {
 
     // Project settings
     yeoman: appConfig,
+
+    gitinfo: {},
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
@@ -443,8 +445,41 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    // Replace variable templates in dist files
+    replace: {
+      dist: {
+        options: {
+          patterns: [{
+            match: '___ENV_REPLACE_WORKAROUND___',
+            replacement: '42'
+          },{
+            match: '___ENV_APP_VERSION___',
+            replacement: '<%= yeoman.app.version %>'
+          },{
+            match: '___ENV_GITINFO_SHORT_SHA___',
+            replacement: '<%= gitinfo.local.branch.current.shortSHA %>'
+          }, {
+            match: '___ENV_GITINFO_LAST_COMMIT_NUMBER___',
+            replacement: '<%= gitinfo.local.branch.current.lastCommitNumber %>'
+          }, {
+            match: '___ENV_GITINFO_BRANCH_NAME___',
+            replacement: '<%= gitinfo.local.branch.current.name %>'
+          }, {
+            match: '___ENV_GITINFO_REMOTE_URL___',
+            replacement: '<%= gitinfo.remote.origin.url %>'
+          }]
+        },
+        files: [
+          {expand: true, flatten: true, src: ['dist/scripts/*.js'], dest: 'dist/scripts/'},
+          {expand: true, flatten: true, src: ['dist/*.html'], dest: 'dist/'}
+        ]
+      }
     }
   });
+
+  grunt.loadNpmTasks('grunt-gitinfo');
 
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
@@ -472,6 +507,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'gitinfo',
     'clean:ghPages',
     'clean:dist',
     'wiredep',
@@ -488,6 +524,7 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
+    'replace',
     'copy:ghPages',
   ]);
 

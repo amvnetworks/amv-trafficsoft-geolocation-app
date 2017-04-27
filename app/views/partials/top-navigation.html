@@ -1,6 +1,11 @@
-<nav class="white" role="navigation">
+<nav class="white" role="navigation" data-ng-controller="TopNavigationController as topnavigation" >
   <div class="nav-wrapper container">
-    <a id="logo-container" href="#/" class="brand-logo"><span class="amv">amv</span> Geolocation</a>
+    <a id="logo-container" href="#/" class="brand-logo">
+      <span class="amv">amv</span> Geolocation
+      <small style="font-size: 50%;">
+        {{topnavigation.gitinfo.local.branch.name}}-{{topnavigation.gitinfo.local.branch.shortSHA}}
+      </small>
+    </a>
     <ul class="right hide-on-med-and-down">
       <li ui-sref-active="active"><a data-ui-sref="home">Home</a></li>
       <li ui-sref-active="active"><a data-ui-sref="settings">Settings</a></li>
