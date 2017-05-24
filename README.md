@@ -1,5 +1,6 @@
-# amv Geolocation UI
-amv Geolocation UI is a frontend for amv Geolocation.
+[![License](https://img.shields.io/github/license/amvnetworks/amv-trafficsoft-geolocation-app.svg?maxAge=2592000)](https://github.com/amvnetworks/amv-trafficsoft-geolocation-app/blob/master/LICENSE)
+
+# amv-trafficsoft-geolocation-app
 
 - grunt
 - npm

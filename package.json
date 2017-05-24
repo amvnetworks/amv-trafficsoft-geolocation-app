@@ -1,5 +1,11 @@
 {
-  "name": "helload",
+  "name": "amv-trafficsoft-geolocation-app",
+  "author": {
+    "name": "AMV Networks GmbH",
+    "email": "development@amv-networks.com",
+    "url": "https://www.amv-networks.com"
+  },
+  "license": "Apache-2.0",
   "private": true,
   "devDependencies": {
     "autoprefixer-core": "^6.0.1",
