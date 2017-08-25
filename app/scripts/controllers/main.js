@@ -63,16 +63,16 @@ angular.module('amvGeolocationUi')
         '</small>' +
         '<br />' +
         '<small>' +
-         ' <i class="material-icons tiny">av_timer</i> speed: ' + geolocation.data.speed +
+         ' <i class="material-icons tiny">av_timer</i> speed: ' + (geolocation.data.speed || 0) + 'km/h' +
         '</small>' +
         '<br />' +
         '<span>' +
         //'' + geolocation.condition.temperature +
         '</span><br />' +
         //'<span>' + geolocation.condition.state + '</span><br />' +
-        '<small>' + geolocation.provider + '</small><br />' +
-        '<small><i class="material-icons tiny">query_builder</i> Request: ' + geolocation.requestTime + '</small><br />' +
-        '<small><i class="material-icons tiny">query_builder</i> Position: ' + geolocation.data.timestamp + '</small>' +
+        '<small><i class="material-icons tiny">router</i> Data Provider: ' + geolocation.provider + '</small><br />' +
+        '<small><i class="material-icons tiny">query_builder</i> Request Time: ' + geolocation.requestTime + '</small><br />' +
+        '<small><i class="material-icons tiny">query_builder</i> Position Time: ' + geolocation.data.timestamp + '</small>' +
         '</div>';
 
       return {

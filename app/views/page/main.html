@@ -35,7 +35,7 @@
             <li>
               <i class="material-icons tiny">av_timer</i>
               <small>
-                speed: {{ geolocation.data.speed }}
+                speed: {{ geolocation.data.speed || 0 }} km/h
               </small>
             </li>
           </ul>
