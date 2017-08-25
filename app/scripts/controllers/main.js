@@ -63,7 +63,7 @@ angular.module('amvGeolocationUi')
         '</small>' +
         '<br />' +
         '<small>' +
-         ' <i class="material-icons tiny">av_timer</i> speed: ' + (geolocation.data.speed || 0) + 'km/h' +
+         ' <i class="material-icons tiny">av_timer</i> speed: ' + (geolocation.data.speed || 0) + ' km/h' +
         '</small>' +
         '<br />' +
         '<span>' +
