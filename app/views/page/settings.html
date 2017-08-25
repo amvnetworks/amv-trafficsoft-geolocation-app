@@ -78,7 +78,7 @@
               <div class="switch right">
                 <label>
                   Aus
-                  <input type="checkbox" data-ng-model="settings.config.showPositionFetchedInRealtime"
+                  <input type="checkbox" data-ng-model="settings.config.enableStreamingUpdates"
                          data-ng-true-value="true" data-ng-false-value="false"
                          data-ng-change-DISABLED="settings.doOnStateChange()">
                   <span class="lever"></span>
@@ -86,22 +86,48 @@
                 </label>
               </div>
 
-              <p data-ng-if="settings.config.showPositionFetchedInRealtime">
+              <p data-ng-if="settings.config.enableStreamingUpdates">
                 Realtime geolocation information updates are <strong class="green-text">enabled</strong>!
                 Recently fetched geolocation information will be displayed in your map.
               </p>
-              <p data-ng-if="!settings.config.showPositionFetchedInRealtime">
+              <p data-ng-if="!settings.config.enableStreamingUpdates">
                 Realtime geolocation information updates are <strong class="grey-text">disabled</strong>!
                 Currently no recently fetched geolocation information will be displayed.
               </p>
 
             </li>
+            <li class="collection-item" style="cursor: pointer;"
+                data-ng-class="{ 'grey lighten-3' : settings.optOut }"
+                data-ng-click="settings.toggleOptOut()">
+              <span class="title">Enable periodic update interval</span>
+
+              <div class="switch right">
+                <label>
+                  Aus
+                  <input type="checkbox" data-ng-model="settings.config.enablePeriodicUpdateInterval"
+                         data-ng-true-value="true" data-ng-false-value="false"
+                         data-ng-change-DISABLED="settings.doOnStateChange()">
+                  <span class="lever"></span>
+                  Ein
+                </label>
+              </div>
+
+              <p data-ng-if="settings.config.enablePeriodicUpdateInterval">
+                Periodic update interval is <strong class="green-text">enabled</strong>!
+                Information will be updated every {{ settings.config.periodicUpdateIntervalInSeconds }} seconds.
+              </p>
+              <p data-ng-if="!settings.config.enablePeriodicUpdateInterval">
+                Periodic update interval is <strong class="grey-text">disabled</strong>!
+                Information will be gathered once and will NOT be updated.
+              </p>
+
+            </li>
             <li class="collection-item">
               <div class="input-field">
-                <input id="positionUpdateIntervalInSeconds" type="number" class="validate"
-                       data-ng-model="settings.config.positionUpdateIntervalInSeconds"
-                       data-ng-disabled="settings.config.showPositionFetchedInRealtime">
-                <label class="active" for="positionUpdateIntervalInSeconds">Position Update Interval In Seconds</label>
+                <input id="periodicUpdateIntervalInSeconds" type="number" class="validate" min="5"
+                       data-ng-model="settings.config.periodicUpdateIntervalInSeconds"
+                       data-ng-disabled="!settings.config.enablePeriodicUpdateInterval">
+                <label class="active" for="periodicUpdateIntervalInSeconds">Periodic Update Interval In Seconds</label>
               </div>
             </li>
             <li class="collection-item" style="cursor: pointer;"

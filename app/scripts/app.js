@@ -100,8 +100,9 @@ angular
           vehicleIds: [1, 2, 3],
         }
       },
-      showPositionFetchedInRealtime: false,
-      positionUpdateIntervalInSeconds: 10,
+      enableStreamingUpdates: false,
+      enablePeriodicUpdateInterval: true,
+      periodicUpdateIntervalInSeconds: 60,
       debug: false
     };
   })
