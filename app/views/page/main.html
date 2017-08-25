@@ -24,7 +24,7 @@
           </header>
 
           <div class="left">
-            <ul>
+            <ul style="margin: 0">
               <li>
                 <i class="material-icons tiny">room</i>
                 <small data-ng-show="geolocation.location.lat && geolocation.location.lng">
@@ -80,6 +80,14 @@
                   <div>
                     <i class="material-icons tiny">label</i>
                     {{ xfcd.param }}: <span>{{ xfcd.value }}</span>
+                  </div>
+                </li>
+              </ul>
+              <ul>
+                <li data-ng-repeat="state in geolocation.data.states">
+                  <div>
+                    <i class="material-icons tiny">label</i>
+                    {{ state.param }}: <span>{{ state.value }}</span>
                   </div>
                 </li>
               </ul>
