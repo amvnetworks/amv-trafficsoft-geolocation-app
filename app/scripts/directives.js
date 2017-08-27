@@ -18,9 +18,13 @@ angular.module('amvGeolocationUi')
       controller: ['$scope', function($scope) {
         var self = this;
 
-        $scope.model = {
-          vehicle: $scope.vehicle()
-        };
+        var vehicle = $scope.vehicle();
+        $scope.model = {};
+        $scope.model.vehicle = vehicle;
+        $scope.model.requestTime = moment(vehicle.requestTime);
+        $scope.model.requestTimeFromNow = moment(vehicle.requestTime).fromNow();
+        $scope.model.positionTime = moment(vehicle.data.timestamp);
+        $scope.model.positionTimeFromNow = moment(vehicle.data.timestamp).fromNow();
 
         this.map = {
           center: {

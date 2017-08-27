@@ -24,7 +24,8 @@
     "amv-trafficsoft-rest-js": "amvnetworks/amv-trafficsoft-rest-js#master",
     "js-data-angular": "^3.2.1",
     "js-data": "^2.10.0",
-    "js-data-localforage": "^2.1.1"
+    "js-data-localforage": "^2.1.1",
+    "moment": "^2.18.1"
   },
   "ignore": [
     "**/.*",
