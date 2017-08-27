@@ -24,7 +24,6 @@ angular.module('amvGeolocationUi')
         center: {
           lat: 49,
           lng: 10,
-          //zoom: 5
           zoom: 3
         },
         markers: [],
@@ -90,16 +89,19 @@ angular.module('amvGeolocationUi')
         };
       };
 
+      function isLocalizable(geolocation) {
+        return (!!geolocation && !!geolocation.location &&
+              geolocation.location.lat &&
+              geolocation.location.lng);
+      }
 
       var removeMarkersFromMap = function () {
         self.map.markers = [];
       };
 
       var addMarkerForGeolocationToMap = function (geolocation) {
-        var hasLocationData = !!(geolocation.location &&
-        geolocation.location.lat &&
-        geolocation.location.lng);
-        if (hasLocationData) {
+        var localizable = isLocalizable(geolocation);
+        if (localizable) {
           var marker = createMarkerForGeolocation(geolocation);
           self.map.markers.push(marker);
         }
@@ -119,6 +121,7 @@ angular.module('amvGeolocationUi')
 
       function apiResponseToGeolocation(data) {
         return {
+          id: data.id,
           name: data.id,
           location: {
             lat: data.latitude,
@@ -133,17 +136,14 @@ angular.module('amvGeolocationUi')
 
       $scope.zoomToLocation = function (geolocation, level) {
         var zoomLevel = level > 0 ? level : 11;
-        var location = geolocation.location;
-        var hasLocationData = !!(location &&
-        location.lat &&
-        location.lng);
-        if (!hasLocationData) {
+        var localizable = isLocalizable(geolocation);
+        if (!localizable) {
           Materialize.toast('No location data available for ' + geolocation.name, 2000);
         } else {
           Materialize.toast('Zoom to ' + geolocation.name, 1000);
           self.map.center = {
-            lat: location.lat,
-            lng: location.lng,
+            lat: geolocation.location.lat,
+            lng: geolocation.location.lng,
             zoom: zoomLevel
           };
         }
@@ -184,6 +184,7 @@ angular.module('amvGeolocationUi')
 
         var fetchDataAndPopulateLocations = function (vehicleIds) {
           return fetchData(vehicleIds).then(function (dataArray) {
+
             removeMarkersFromMap();
             $scope.locations = [];
 
@@ -220,6 +221,12 @@ angular.module('amvGeolocationUi')
           var timeoutIntervalInMilliseconds = (settings.periodicUpdateIntervalInSeconds || 10) * 1000;
 
           var runRecursive = settings.enablePeriodicUpdateInterval;
+
+          // TODO: currently, if a modal is open, and the periodic update runs
+          // the modal will be removed from the DOM - catastrophic user experience
+          // just disable for now, till we have a proper implementation (maybe replace polling with websockets? :D)
+          runRecursive = false;
+
           var fetchMethod = runRecursive ? function () {
             return invokeRecursiveFetchDataAndPopulateLocations(vehicleIds, timeoutIntervalInMilliseconds);
           } : function () {

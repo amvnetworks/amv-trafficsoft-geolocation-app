@@ -8,6 +8,106 @@
  * Controller of the amvGeolocationUi
  */
 angular.module('amvGeolocationUi')
+.directive('amvVehicleDetail', [function () {
+    return {
+      transclude: true,
+      scope: {
+        vehicle: '&vehicle'
+      },
+      controllerAs: 'ctrl',
+      controller: ['$scope', function($scope) {
+        var self = this;
+
+        $scope.model = {
+          vehicle: $scope.vehicle()
+        };
+
+        this.map = {
+          center: {
+            lat:  $scope.model.vehicle.location.lat,
+            lng:  $scope.model.vehicle.location.lng,
+            //zoom: 5
+            zoom: 12
+          },
+          markers: [],
+          events: {},
+          defaults: {
+            scrollWheelZoom: true,
+            center: {
+              lat: 49,
+              lng: 10,
+              zoom: 5
+            }
+          },
+          tiles: {
+            url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          },
+          controls: {
+            fullscreen: {
+              position: 'topleft'
+            }
+          }
+        };
+
+        $scope.$watch(function () {
+          return self.map.center.zoom;
+        }, function (zoom) {
+          self.map.tiles.url = (zoom > 6) ? 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            : 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+        });
+
+        var createMarkerForGeolocation = function (geolocation) {
+          return {
+            lat: geolocation.location.lat,
+            lng: geolocation.location.lng,
+            draggable: false,
+            //focus: true,
+            icon: {
+              //iconUrl: markerIconUrl,
+              iconSize: [48, 48],
+              iconAnchor: [24, 24],
+              popupAnchor: [0, 0]
+            }
+          };
+        };
+
+        function isLocalizable(geolocation) {
+          return (!!geolocation && !!geolocation.location &&
+                geolocation.location.lat &&
+                geolocation.location.lng);
+        }
+
+        var removeMarkersFromMap = function () {
+          self.map.markers = [];
+        };
+
+        var addMarkerForGeolocationToMap = function (geolocation) {
+          var localizable = isLocalizable(geolocation);
+          if (localizable) {
+            var marker = createMarkerForGeolocation(geolocation);
+            self.map.markers.push(marker);
+          }
+        };
+
+        var zoomToLocation = function (geolocation, level) {
+          var zoomLevel = level > 0 ? level : 11;
+          var localizable = isLocalizable(geolocation);
+          if (localizable) {
+            self.map.center = {
+              lat: geolocation.location.lat,
+              lng: geolocation.location.lng,
+              zoom: zoomLevel
+            };
+          }
+        };
+
+        removeMarkersFromMap();
+        addMarkerForGeolocationToMap($scope.model.vehicle);
+        zoomToLocation($scope.model.vehicle, 15);
+      }],
+      templateUrl: 'views/directives/amv-vehicle-detail.html'
+    };
+  }])
   .directive('materializeModal', [function () {
     return {
       transclude: true,

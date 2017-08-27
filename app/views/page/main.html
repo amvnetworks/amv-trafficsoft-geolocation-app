@@ -50,12 +50,17 @@
               <i class="material-icons">my_location</i>
             </a>
             <a class="btn-floating waves-effect waves-light amber"
-               data-materialize-modal-activator data-target="modal-geolocation-{{geolocation.name}}"
+               data-ui-sref="vehicle({id: geolocation.id})"
                data-materialize-tooltipped data-delay="50" data-tooltip="view additional information">
               <i class="material-icons">perm_device_information</i>
             </a>
 
-            <div data-materialize-modal data-id="modal-geolocation-{{geolocation.name}}"
+            <!--a class="btn-floating waves-effect waves-light amber"
+               data-materialize-modal-activator data-target="modal-geolocation-{{geolocation.name}}"
+               data-materialize-tooltipped data-delay="50" data-tooltip="view additional information">
+              <i class="material-icons">perm_device_information</i>
+            </a-->
+            <!--div data-materialize-modal data-id="modal-geolocation-{{geolocation.name}}"
                  data-header-text="{{geolocation.name}}">
               <div>
                 <i class="material-icons tiny">room</i> lat/lng: {{geolocation.location.lat}} / {{
@@ -91,7 +96,7 @@
                   </div>
                 </li>
               </ul>
-            </div>
+            </div-->
 
           </div>
           <div style="float:none; clear:both;"></div>

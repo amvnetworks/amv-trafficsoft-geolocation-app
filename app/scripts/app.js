@@ -165,6 +165,17 @@ angular
         controller: 'SettingsCtrl',
         controllerAs: 'settings'
       })
+      .state('vehicle', {
+        url: '/vehicle-detail/:id',
+        templateUrl: 'views/page/vehicle-detail.html',
+        controller: 'VehicleDetailCtrl',
+        controllerAs: 'vehicleDetail',
+        resolve: {
+            amvVehicleId: ['$stateParams', function($stateParams) {
+              return $stateParams.id;
+            }]
+        }
+      })
       .state('about', {
         url: '/about',
         templateUrl: 'views/page/about.html',
