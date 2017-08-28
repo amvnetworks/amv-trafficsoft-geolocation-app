@@ -107,7 +107,7 @@ angular.module('amvGeolocationUi')
 
         removeMarkersFromMap();
         addMarkerForGeolocationToMap($scope.model.vehicle);
-        zoomToLocation($scope.model.vehicle, 15);
+        zoomToLocation($scope.model.vehicle, 17);
       }],
       templateUrl: 'views/directives/amv-vehicle-detail.html'
     };
